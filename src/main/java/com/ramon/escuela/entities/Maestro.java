@@ -43,6 +43,14 @@ public class Maestro {
     @OneToMany(mappedBy = "maestro", fetch =  FetchType.LAZY)
     private List<Grupo> grupos = new ArrayList<>();
 
+    public String obtenerNombreCompleto(){
+        return String.join(
+                "",
+                this.getNombre(),
+                this.getApellidoPaterno(),
+                this.getApellidoMaterno());
+    }
+
     private static void validarDatos(String nombre, String apellidoPaterno, String apellidoMaterno,
                                      String email, String telefono){
         StringCustomUtils.validarTamanio(nombre, 1,50,
@@ -79,6 +87,7 @@ public class Maestro {
         return Maestro.builder()
                 .nombre(nombre.trim())
                 .apellidoPaterno(apellidoPaterno.trim())
+                .apellidoMaterno(apellidoMaterno.trim())
                 .email(email.trim().toLowerCase())
                 .telefono(telefono.trim())
                 .build();

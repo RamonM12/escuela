@@ -38,6 +38,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, e.getMessage());
     }
 
+    // 409 regla de entidad relacionada (relacion existente entre registros)
+    @ExceptionHandler(EntidadRelacionadaException.class)
+    public ProblemDetail handleRelacionada(EntidadRelacionadaException e){
+        log.warn("Conflicto de negocio: {}", e.getMessage());
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, e.getMessage());
+    }
+
     // 409 la base de datos rechazo el dato (ej. DataIntegrityViolationException)
     @ExceptionHandler(org.springframework.dao.DataIntegrityViolationException.class)
     public ProblemDetail handleIntegridad(org.springframework.dao.DataIntegrityViolationException e){
