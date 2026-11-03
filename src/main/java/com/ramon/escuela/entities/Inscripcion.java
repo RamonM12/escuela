@@ -1,5 +1,6 @@
 package com.ramon.escuela.entities;
 
+import com.ramon.escuela.exceptions.DatoInvalidoException;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -34,5 +35,29 @@ public class Inscripcion {
 
     @OneToOne(mappedBy = "inscripcion")
     private Calificacion calificacion;
+
+    public static void validarDatos(Alumno alumno, Grupo grupo) {
+        if (alumno == null) {
+            throw new DatoInvalidoException("El alumno es requerido");
+        }
+        if (grupo == null) {
+            throw new DatoInvalidoException("El grupo es requerido");
+        }
+    }
+
+    public void actualizar(Alumno alumno, Grupo grupo) {
+        validarDatos(alumno, grupo);
+        this.alumno = alumno;
+        this.grupo = grupo;
+    }
+
+    public static Inscripcion crear(Alumno alumno, Grupo grupo) {
+        validarDatos(alumno, grupo);
+        return Inscripcion.builder()
+                .alumno(alumno)
+                .grupo(grupo)
+                .fechaInscripcion(LocalDate.now())
+                .build();
+    }
 }
 

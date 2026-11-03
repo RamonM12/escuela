@@ -9,7 +9,7 @@ public interface MaestroRepository extends JpaRepository<Maestro, Long> {
 
     boolean existsByEmailIgnoreCase(String email);
 
-    boolean existByTelefono(String telefono);
+    boolean existsByTelefono(String telefono);
 
     boolean existsByEmailIgnoreCaseAndIdNot(String emai, Long id);
 
