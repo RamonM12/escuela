@@ -1,0 +1,25 @@
+package com.ramon.escuela.repositories;
+
+import com.ramon.escuela.entities.Alumno;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+public interface AlumnoRepository extends JpaRepository<Alumno, Long> {
+
+    @Query(value = """
+        SELECT GENERAR_MATRICULA(:nombre, :paterno, :materno) FROM DUAL
+        """, nativeQuery = true)
+    String generarMatricula(
+            @Param("nombre") String nombre,
+            @Param("paterno") String apellidoPaterno,
+            @Param("materno") String apellidoMaterno);
+
+    @Query(value = """
+        SELECT GENERAR_EMAIL(:nombre, :paterno, :materno) FROM DUAL
+        """, nativeQuery = true)
+    String generarEmail(
+            @Param("nombre") String nombre,
+            @Param("paterno") String apellidoPaterno,
+            @Param("materno") String apellidoMaterno);
+}
