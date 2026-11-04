@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/maestros")
 @Tag(name = "API MAestros", description = "Metodos para gestion de maestros")
 public class MaestroController extends CrudController<MaestroRequest, MaestroResponse, MaestroService>{
+
     public MaestroController(MaestroService service) {
         super(service);
     }
