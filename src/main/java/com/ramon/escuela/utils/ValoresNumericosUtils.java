@@ -23,4 +23,11 @@ public class ValoresNumericosUtils {
         if(numero.compareTo(BigDecimal.ZERO) <= 0)
             throw new DatoInvalidoException(mensaje);
     }
+
+    public static void validarBigDecimalEnRango(BigDecimal numero, BigDecimal min, BigDecimal max, String mensaje){
+        validarNumeroRequerido(numero, mensaje);
+
+        if(numero.compareTo(min) < 0 || numero.compareTo(max) > 0)
+            throw new DatoInvalidoException(mensaje);
+    }
 }

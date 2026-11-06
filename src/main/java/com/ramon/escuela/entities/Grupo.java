@@ -5,6 +5,9 @@ import com.ramon.escuela.utils.StringCustomUtils;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Builder @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,6 +37,10 @@ public class Grupo {
     @Column(name = "PERIODO", nullable = false, length = 20)
     private String periodo;
 
+    @OneToMany(mappedBy = "grupo")
+    @Builder.Default
+    private List<Horario> horarios = new ArrayList<>();
+
     public static void validarDatos(Curso curso, Maestro maestro, Aula aula, String periodo) {
         if (curso == null) {
             throw new DatoInvalidoException("El curso es requerido");
@@ -46,6 +53,15 @@ public class Grupo {
         }
         StringCustomUtils.validarTamanio(periodo, 3, 20,
                 "El periodo es requerido y debe tener entre 3 y 20 caracteres");
+    }
+
+    public boolean cambioEnDatos(Curso curso, Maestro maestro, Aula aula, String periodo){
+        boolean cambioCurso = !this.curso.getId().equals(curso.getId());
+        boolean cambioMaestro = !this.maestro.getId().equals(maestro.getId());
+        boolean cambioAula = !this.aula.getId().equals(aula.getId());
+        boolean cambioPeriodo = !this.periodo.equals(periodo.trim());
+
+        return cambioCurso || cambioMaestro || cambioAula || cambioPeriodo;
     }
 
     public void actualizar(Curso curso, Maestro maestro, Aula aula, String periodo) {

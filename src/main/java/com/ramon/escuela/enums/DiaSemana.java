@@ -1,6 +1,6 @@
 package com.ramon.escuela.enums;
 
-import com.ramon.escuela.exceptions.RecursoNoEncontradoException;
+import com.ramon.escuela.exceptions.DatoInvalidoException;
 import com.ramon.escuela.utils.StringCustomUtils;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +27,6 @@ public enum DiaSemana {
                 return diaSemana;
         }
 
-        throw new RecursoNoEncontradoException("No existe un dia de la semana con la descripcion"+ descripcion);
+        throw new DatoInvalidoException("No existe un dia de la semana con la descripcion " + descripcion);
     }
 }

@@ -15,8 +15,7 @@ public class ServiceUtils {
 
         return repository.findById(id).orElseThrow(() ->
                 new RecursoNoEncontradoException(
-                        clase.getSimpleName() +
-                                "no encontrado con id: " + id));
+                        clase.getSimpleName() + "no encontrado con id: " + id));
 
     }
 }
