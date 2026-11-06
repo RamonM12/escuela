@@ -6,7 +6,6 @@ import com.ramon.escuela.entities.Grupo;
 import com.ramon.escuela.entities.Horario;
 import com.ramon.escuela.enums.DiaSemana;
 import com.ramon.escuela.exceptions.ConflictException;
-import com.ramon.escuela.exceptions.RecursoNoEncontradoException;
 import com.ramon.escuela.mappers.HorarioMapper;
 import com.ramon.escuela.repositories.GrupoRepository;
 import com.ramon.escuela.repositories.HorarioRepository;
@@ -41,9 +40,7 @@ public class HorarioServiceImpl implements HorarioService {
     @Override
     @Transactional(readOnly = true)
     public HorarioResponse obtenerPorId(Long id) {
-        Horario horario = horarioRepository.findById(id)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Horario no encontrado con ID: " + id));
-        return horarioMapper.entidadAResponse(horario);
+        return horarioMapper.entidadAResponse(obtenerHorario(id));
     }
 
     @Override

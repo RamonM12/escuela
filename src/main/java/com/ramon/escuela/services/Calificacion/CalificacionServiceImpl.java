@@ -5,7 +5,6 @@ import com.ramon.escuela.dto.calificacion.CalificacionResponse;
 import com.ramon.escuela.entities.Calificacion;
 import com.ramon.escuela.entities.Inscripcion;
 import com.ramon.escuela.exceptions.ConflictException;
-import com.ramon.escuela.exceptions.RecursoNoEncontradoException;
 import com.ramon.escuela.mappers.CalificacionMapper;
 import com.ramon.escuela.repositories.CalificacionRepository;
 import com.ramon.escuela.repositories.InscripcionRepository;
@@ -40,9 +39,7 @@ public class CalificacionServiceImpl implements CalificacionService {
     @Override
     @Transactional(readOnly = true)
     public CalificacionResponse obtenerPorId(Long id) {
-        Calificacion calificacion = calificacionRepository.findById(id)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Calificacion no encontrada con ID: " + id));
-        return calificacionMapper.entidadAResponse(calificacion);
+        return calificacionMapper.entidadAResponse(obtenerCalificacion(id));
     }
 
     @Override

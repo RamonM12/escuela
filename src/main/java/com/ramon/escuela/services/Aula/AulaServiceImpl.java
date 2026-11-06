@@ -5,7 +5,6 @@ import com.ramon.escuela.dto.aula.AulaRequest;
 import com.ramon.escuela.entities.Aula;
 import com.ramon.escuela.exceptions.ConflictException;
 import com.ramon.escuela.exceptions.EntidadRelacionadaException;
-import com.ramon.escuela.exceptions.RecursoNoEncontradoException;
 import com.ramon.escuela.mappers.AulaMapper;
 import com.ramon.escuela.repositories.AulaRepository;
 import com.ramon.escuela.repositories.GrupoRepository;
@@ -40,9 +39,7 @@ public class AulaServiceImpl implements AulaService{
     @Override
     @Transactional(readOnly = true)
     public AulaResponse obtenerPorId(Long id) {
-        Aula aula = aulaRepository.findById(id)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Aula no encontrada con ID: " + id));
-        return aulaMapper.entidadAResponse(aula);
+        return aulaMapper.entidadAResponse(obtenerAula(id));
     }
 
     @Override

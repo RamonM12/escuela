@@ -14,15 +14,10 @@ import java.math.BigDecimal;
 
 @Component
 @RequiredArgsConstructor
-public class InscripcionMapper implements CommonMapper<InscripcionRequest, InscripcionResponse, Inscripcion> {
+public class InscripcionMapper {
 
     private final AlumnoMapper alumnoMapper;
     private final GrupoMapper grupoMapper;
-
-    @Override
-    public Inscripcion requestAEntidad(InscripcionRequest request) {
-        return null;
-    }
 
     public Inscripcion requestAEntidad(InscripcionRequest request, Alumno alumno, Grupo grupo) {
         if (request == null) return null;
@@ -30,7 +25,6 @@ public class InscripcionMapper implements CommonMapper<InscripcionRequest, Inscr
         return Inscripcion.crear(alumno, grupo);
     }
 
-    @Override
     public InscripcionResponse entidadAResponse(Inscripcion entidad) {
         if (entidad == null) return null;
 

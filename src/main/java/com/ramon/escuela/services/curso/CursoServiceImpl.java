@@ -5,7 +5,6 @@ import com.ramon.escuela.dto.cursos.CursoResponse;
 import com.ramon.escuela.entities.Curso;
 import com.ramon.escuela.exceptions.ConflictException;
 import com.ramon.escuela.exceptions.EntidadRelacionadaException;
-import com.ramon.escuela.exceptions.RecursoNoEncontradoException;
 import com.ramon.escuela.mappers.CursoMapper;
 import com.ramon.escuela.repositories.CursoRepository;
 import com.ramon.escuela.repositories.GrupoRepository;
@@ -40,9 +39,7 @@ public class CursoServiceImpl implements CursoService {
     @Override
     @Transactional(readOnly = true)
     public CursoResponse obtenerPorId(Long id) {
-        Curso curso = cursoRepository.findById(id)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Curso no encontrado con ID: " + id));
-        return cursoMapper.entidadAResponse(curso);
+        return cursoMapper.entidadAResponse(obtenerCurso(id));
     }
 
     @Override

@@ -7,7 +7,6 @@ import com.ramon.escuela.entities.Grupo;
 import com.ramon.escuela.entities.Inscripcion;
 import com.ramon.escuela.exceptions.ConflictException;
 import com.ramon.escuela.exceptions.EntidadRelacionadaException;
-import com.ramon.escuela.exceptions.RecursoNoEncontradoException;
 import com.ramon.escuela.mappers.InscripcionMapper;
 import com.ramon.escuela.repositories.AlumnoRepository;
 import com.ramon.escuela.repositories.GrupoRepository;
@@ -43,9 +42,7 @@ public class InscripcionServiceImpl implements InscripcionService {
     @Override
     @Transactional(readOnly = true)
     public InscripcionResponse obtenerPorId(Long id) {
-        Inscripcion inscripcion = inscripcionRepository.findById(id)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Inscripcion no encontrada con ID: " + id));
-        return inscripcionMapper.entidadAResponse(inscripcion);
+        return inscripcionMapper.entidadAResponse(obtenerInscripcion(id));
     }
 
     @Override

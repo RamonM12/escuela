@@ -10,14 +10,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class CalificacionMapper implements CommonMapper<CalificacionRequest, CalificacionResponse, Calificacion> {
+public class CalificacionMapper {
 
     private final InscripcionMapper inscripcionMapper;
-
-    @Override
-    public Calificacion requestAEntidad(CalificacionRequest request) {
-        return null;
-    }
 
     public Calificacion requestAEntidad(CalificacionRequest request, Inscripcion inscripcion) {
         if (request == null) return null;
@@ -25,7 +20,6 @@ public class CalificacionMapper implements CommonMapper<CalificacionRequest, Cal
         return Calificacion.crear(request.calificacion(), inscripcion);
     }
 
-    @Override
     public CalificacionResponse entidadAResponse(Calificacion entidad) {
         if (entidad == null) return null;
 

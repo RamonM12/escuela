@@ -10,24 +10,18 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class HorarioMapper implements CommonMapper<HorarioRequest, HorarioResponse, Horario> {
+public class HorarioMapper {
 
     private final GrupoMapper grupoMapper;
 
-    @Override
-    public Horario requestAEntidad(HorarioRequest request) {
-        return null;
+    public Horario requestAEntidad(HorarioRequest request, Grupo grupo){
+        if(request == null) return null;
+
+        DiaSemana dia = DiaSemana.obtenerDiaSemanaPorDescripcion(request.dia());
+
+        return Horario.crear(grupo, dia, request.horaInicio(), request.horaFin());
     }
 
-    public Horario requestAEntidad(HorarioRequest resquest, Grupo grupo){
-        if(resquest == null) return null;
-
-        DiaSemana dia = DiaSemana.obtenerDiaSemanaPorDescripcion(resquest.dia());
-
-        return Horario.crear(grupo, dia, resquest.horaInicio(), resquest.horaFin());
-    }
-
-    @Override
     public HorarioResponse entidadAResponse(Horario entidad) {
         if (entidad == null) return null;
 
@@ -38,4 +32,3 @@ public class HorarioMapper implements CommonMapper<HorarioRequest, HorarioRespon
         );
     }
 }
-

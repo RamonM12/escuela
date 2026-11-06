@@ -11,32 +11,23 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class GrupoMapper implements CommonMapper<GrupoResquest, GrupoResponse, Grupo>{
+public class GrupoMapper {
 
     private final CursoMapper cursoMapper;
     private final MaestroMapper maestroMapper;
     private final AulaMapper aulaMapper;
 
-    @Override
-    public Grupo requestAEntidad (GrupoResquest request) {
-        throw new UnsupportedOperationException(
-                "Usa requestAEntidad(request, curso, maestro, aula)"
-        );
-    }
-
     public Grupo requestAEntidad(GrupoResquest request, Curso curso, Maestro maestro, Aula aula){
         return request == null
                 ? null
                 : Grupo.crear(
-                        curso,
-                        maestro,
-                        aula,
-                        request.periodo()
-
+                curso,
+                maestro,
+                aula,
+                request.periodo()
         );
     }
 
-    @Override
     public GrupoResponse entidadAResponse(Grupo entidad) {
         if (entidad == null) return null;
 
@@ -53,6 +44,7 @@ public class GrupoMapper implements CommonMapper<GrupoResquest, GrupoResponse, G
                 entidad.getPeriodo()
         );
     }
+
     public DatosGrupo entidadADatosGrupo(Grupo entidad) {
         return entidad == null
                 ? null

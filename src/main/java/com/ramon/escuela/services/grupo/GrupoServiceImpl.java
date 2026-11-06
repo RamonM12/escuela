@@ -8,7 +8,6 @@ import com.ramon.escuela.entities.Grupo;
 import com.ramon.escuela.entities.Maestro;
 import com.ramon.escuela.exceptions.ConflictException;
 import com.ramon.escuela.exceptions.EntidadRelacionadaException;
-import com.ramon.escuela.exceptions.RecursoNoEncontradoException;
 import com.ramon.escuela.mappers.GrupoMapper;
 import com.ramon.escuela.repositories.*;
 import com.ramon.escuela.utils.ServiceUtils;
@@ -33,6 +32,7 @@ public class GrupoServiceImpl implements GrupoService{
     private final HorarioRepository horarioRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<GrupoResponse> listar() {
         log.info("Listando todos los grupos..");
 
@@ -44,10 +44,7 @@ public class GrupoServiceImpl implements GrupoService{
     @Override
     @Transactional(readOnly = true)
     public GrupoResponse obtenerPorId(Long id) {
-        Grupo grupo = grupoRepository.findById(id)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Grupo no encontrado con ID: " + id));
-
-        return grupoMapper.entidadAResponse(grupo);
+        return grupoMapper.entidadAResponse(obtenerGrupo(id));
     }
 
     @Override
@@ -121,8 +118,6 @@ public class GrupoServiceImpl implements GrupoService{
             grupoRepository.flush();
 
             log.info("Grupo {} eliminado ", id);
-
-
     }
 
     private Grupo obtenerGrupo(Long id){
