@@ -25,7 +25,7 @@ public class HorarioTest {
     }
 
     @Test
-    void actualizar_debeModificarDatos_quandoTodoEsValido() {
+    void actualizar_debeModificarDatos_cuandoTodoEsValido() {
         // Arrange
         Horario horario = Horario.builder()
                 .horaInicio("08:00")
@@ -46,7 +46,6 @@ public class HorarioTest {
 
     @Test
     void crear_debeLanzarExcepcion_cuandoGrupoEsNulo() {
-        // Act + Assert
         assertThatThrownBy(() -> Horario.crear(null, DiaSemana.LUNES, "07:00", "09:00"))
                 .isInstanceOf(DatoInvalidoException.class)
                 .hasMessage("El grupo es requerido");
@@ -54,7 +53,6 @@ public class HorarioTest {
 
     @Test
     void crear_debeLanzarExcepcion_cuandoDiaSemanaEsNulo() {
-        // Act + Assert
         assertThatThrownBy(() -> Horario.crear(new Grupo(), null, "07:00", "09:00"))
                 .isInstanceOf(DatoInvalidoException.class)
                 .hasMessage("El día de la semana es requerido");
@@ -62,10 +60,45 @@ public class HorarioTest {
 
     @Test
     void crear_debeLanzarExcepcion_cuandoFormatoHoraInicioEsInvalido() {
-        // Act + Assert (longitud distinta a 5 caracteres)
+        // Sin el cero inicial
         assertThatThrownBy(() -> Horario.crear(new Grupo(), DiaSemana.LUNES, "7:00", "09:00"))
                 .isInstanceOf(DatoInvalidoException.class)
-                .hasMessage("La hora de inicio es requerida y debe tener el formato HH:mm (5 caracteres)");
+                .hasMessage("La hora de inicio es requerida y debe tener el formato HH:mm");
     }
 
+    @Test
+    void crear_debeLanzarExcepcion_cuandoHoraNoExiste() {
+        // Tiene 5 caracteres, pero 25 no es una hora valida
+        assertThatThrownBy(() -> Horario.crear(new Grupo(), DiaSemana.LUNES, "08:00", "25:00"))
+                .isInstanceOf(DatoInvalidoException.class)
+                .hasMessage("La hora de fin es requerida y debe tener el formato HH:mm");
+    }
+
+    @Test
+    void crear_debeLanzarExcepcion_cuandoHoraFinEsAnteriorAInicio() {
+        assertThatThrownBy(() -> Horario.crear(new Grupo(), DiaSemana.LUNES, "10:00", "08:00"))
+                .isInstanceOf(DatoInvalidoException.class)
+                .hasMessage("La hora de fin debe ser posterior a la hora de inicio");
+    }
+
+    @Test
+    void crear_debeLanzarExcepcion_cuandoHorasSonIguales() {
+        assertThatThrownBy(() -> Horario.crear(new Grupo(), DiaSemana.LUNES, "10:00", "10:00"))
+                .isInstanceOf(DatoInvalidoException.class)
+                .hasMessage("La hora de fin debe ser posterior a la hora de inicio");
+    }
+
+    @Test
+    void seTraslapaCon_debeRetornarTrue_cuandoLasHorasSeCruzan() {
+        Horario horario = Horario.crear(new Grupo(), DiaSemana.LUNES, "08:00", "10:00");
+
+        assertThat(horario.seTraslapaCon("09:00", "11:00")).isTrue();
+    }
+
+    @Test
+    void seTraslapaCon_debeRetornarFalse_cuandoUnoEmpiezaJustoAlTerminarElOtro() {
+        Horario horario = Horario.crear(new Grupo(), DiaSemana.LUNES, "08:00", "10:00");
+
+        assertThat(horario.seTraslapaCon("10:00", "12:00")).isFalse();
+    }
 }
