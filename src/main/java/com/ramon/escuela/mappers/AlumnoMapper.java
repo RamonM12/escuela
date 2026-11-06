@@ -2,6 +2,7 @@ package com.ramon.escuela.mappers;
 
 import com.ramon.escuela.dto.alumnos.AlumnoRequest;
 import com.ramon.escuela.dto.alumnos.AlumnoResponse;
+import com.ramon.escuela.dto.datos.DatosAlumno;
 import com.ramon.escuela.dto.datos.DatosCalificacion;
 import com.ramon.escuela.entities.Alumno;
 import com.ramon.escuela.entities.Inscripcion;
@@ -61,6 +62,13 @@ public class AlumnoMapper implements CommonMapper<AlumnoRequest, AlumnoResponse,
                                 :null
                 )).toList();
     }
-
-
+    public DatosAlumno entidadADatosAlumno(Alumno entidad) {
+        return entidad == null
+                ? null
+                : new DatosAlumno(
+                entidad.obtenerNombreCompleto(),
+                entidad.getMatricula(),
+                entidad.getEmail(),
+                StringCustomUtils.localDateAString(entidad.getFechaIngreso()));
+    }
 }

@@ -54,4 +54,14 @@ public class Curso {
                 .creditos(creditos)
                 .build();
     }
+
+    public boolean cambioEnDatos(String nombreCursos, String descripcion, Integer creditos) {
+        String descripcionNueva = descripcion != null ? descripcion.trim() : null;
+
+        boolean cambioNombre = !this.nombreCursos.equals(nombreCursos.trim());
+        boolean cambioDescripcion = !java.util.Objects.equals(this.descripcion, descripcionNueva);
+        boolean cambioCreditos = !this.creditos.equals(creditos);
+
+        return cambioNombre || cambioDescripcion || cambioCreditos;
+    }
 }

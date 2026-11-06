@@ -45,6 +45,13 @@ public class Inscripcion {
         }
     }
 
+    public boolean cambioEnDatos(Alumno alumno, Grupo grupo) {
+        boolean cambioAlumno = !this.alumno.getId().equals(alumno.getId());
+        boolean cambioGrupo = !this.grupo.getId().equals(grupo.getId());
+
+        return cambioAlumno || cambioGrupo;
+    }
+
     public void actualizar(Alumno alumno, Grupo grupo) {
         validarDatos(alumno, grupo);
         this.alumno = alumno;

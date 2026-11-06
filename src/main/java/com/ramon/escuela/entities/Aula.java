@@ -18,28 +18,34 @@ public class Aula {
     @Column(name = "ID_AULA")
     private Long id;
 
-    @Column(name = "NOMBRE", nullable = false, unique = true, length = 100)
+    @Column(name = "NOMBRE", nullable = false, unique = true, length = 30)
     private String nombre;
 
     @Column(name = "CAPACIDAD", nullable = false)
-    private int capacidad;
+    private Integer capacidad;
 
-    //MIO
-    public static void validarDatos(String nombre, int capacidad) {
-        StringCustomUtils.validarTamanio(nombre, 3, 100,
-                "El nombre del aula es requerido y debe tener entre 3 y 100 caracteres");
+    public static void validarDatos(String nombre, Integer capacidad) {
+        StringCustomUtils.validarTamanio(nombre, 3, 30,
+                "El nombre del aula es requerido y debe tener entre 3 y 30 caracteres");
 
         ValoresNumericosUtils.validarEnteroPositivo(capacidad,
                 "La capacidad debe ser un número entero positivo");
     }
 
-    public void actualizar(String nombre, int capacidad) {
+    public boolean cambioEnDatos(String nombre, Integer capacidad){
+        boolean cambioNombre = !this.nombre.equals(nombre.trim());
+        boolean cambioCapacidad = !this.capacidad.equals(capacidad);
+
+        return cambioNombre || cambioCapacidad;
+    }
+
+    public void actualizar(String nombre, Integer capacidad) {
         validarDatos(nombre, capacidad);
         this.nombre = nombre.trim();
         this.capacidad = capacidad;
     }
 
-    public static Aula crear(String nombre, int capacidad) {
+    public static Aula crear(String nombre, Integer capacidad) {
         validarDatos(nombre, capacidad);
         return Aula.builder()
                 .nombre(nombre.trim())

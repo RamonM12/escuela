@@ -1,6 +1,7 @@
 package com.ramon.escuela.mappers;
 
 import com.ramon.escuela.dto.datos.DatosCurso;
+import com.ramon.escuela.dto.datos.DatosMaestro;
 import com.ramon.escuela.dto.maestros.MaestroRequest;
 import com.ramon.escuela.dto.maestros.MaestroResponse;
 import com.ramon.escuela.entities.Grupo;
@@ -37,7 +38,7 @@ public class MaestroMapper implements CommonMapper<MaestroRequest, MaestroRespon
                         entidad.obtenerNombreCompleto(),
                         entidad.getEmail(),
                         entidad.getTelefono(),
-                null);
+                        entidadADatosCurso(entidad));
     }
 
     public List<DatosCurso> entidadADatosCurso(Maestro entidad){
@@ -46,6 +47,16 @@ public class MaestroMapper implements CommonMapper<MaestroRequest, MaestroRespon
                 : entidad.getGrupos().stream()
                 .map(Grupo::getCurso)
                 .map(cursoMapper::entidadADatosCurso)
+                .distinct()
                 .toList();
+    }
+
+    public DatosMaestro entidadADatosMaestro(Maestro entidad) {
+        return entidad == null
+                ? null
+                : new DatosMaestro(
+                entidad.obtenerNombreCompleto(),
+                entidad.getEmail(),
+                entidad.getTelefono());
     }
 }
