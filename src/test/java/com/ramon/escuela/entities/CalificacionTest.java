@@ -27,12 +27,14 @@ public class CalificacionTest {
     @Test
     void actualizar_debeModificarCalificacion_cuandoEsValida() {
         // Arrange
+        Inscripcion inscripcion = new Inscripcion();
         Calificacion calificacion = Calificacion.builder()
                 .calificacion(new BigDecimal("8.0"))
+                .inscripcion(inscripcion)
                 .build();
 
         // Act
-        calificacion.actualizar(new BigDecimal("10.0"));
+        calificacion.actualizar(new BigDecimal("10.0"), inscripcion);
 
         // Assert
         assertThat(calificacion.getCalificacion()).isEqualByComparingTo("10.0");
@@ -41,14 +43,33 @@ public class CalificacionTest {
     @Test
     void actualizar_debeLanzarExcepcion_cuandoCalificacionEsNegativa() {
         // Arrange
+        Inscripcion inscripcion = new Inscripcion();
         Calificacion calificacion = Calificacion.builder()
                 .calificacion(new BigDecimal("8.0"))
+                .inscripcion(inscripcion)
                 .build();
 
         // Act + Assert
-        assertThatThrownBy(() -> calificacion.actualizar(new BigDecimal("-1.5")))
+        assertThatThrownBy(() -> calificacion.actualizar(new BigDecimal("-1.5"), inscripcion))
                 .isInstanceOf(DatoInvalidoException.class)
-                .hasMessage("La calificación es requerida y debe ser un valor positivo");
+                .hasMessage("La calificación es requerida y debe estar entre 0 y 10");
+    }
+
+    @Test
+    void crear_debeLanzarExcepcion_cuandoCalificacionEsMayorADiez() {
+        // Act + Assert
+        assertThatThrownBy(() -> Calificacion.crear(new BigDecimal("10.5"), new Inscripcion()))
+                .isInstanceOf(DatoInvalidoException.class)
+                .hasMessage("La calificación es requerida y debe estar entre 0 y 10");
+    }
+
+    @Test
+    void crear_debePermitirCero_porqueEstaDentroDelRango() {
+        // Act
+        Calificacion calificacion = Calificacion.crear(BigDecimal.ZERO, new Inscripcion());
+
+        // Assert
+        assertThat(calificacion.getCalificacion()).isEqualByComparingTo("0");
     }
 
     @Test

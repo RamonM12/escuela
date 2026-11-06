@@ -10,13 +10,8 @@ public class AlumnoTest {
     @Test
     void crear_debeRetornarAlumno_cuandoDatosSonValidos() {
         // Act
-        Alumno alumno = Alumno.crear(
-                "José Ramón",
-                "Mora",
-                "Cruz",
-                "jose.mora@escuela.com",
-                "20260001"
-        );
+        Alumno alumno = Alumno.crear("José Ramón", "Mora", "Cruz");
+        alumno.asignarDatosAcademicos("jose.mora@escuela.com", "A202600001");
 
         // Assert
         assertThat(alumno).isNotNull();
@@ -24,7 +19,7 @@ public class AlumnoTest {
         assertThat(alumno.getApellidoPaternoAlumno()).isEqualTo("Mora");
         assertThat(alumno.getApellidoMaternoAlumno()).isEqualTo("Cruz");
         assertThat(alumno.getEmail()).isEqualTo("jose.mora@escuela.com");
-        assertThat(alumno.getMatricula()).isEqualTo("20260001");
+        assertThat(alumno.getMatricula()).isEqualTo("A202600001");
     }
 
     @Test
@@ -35,11 +30,11 @@ public class AlumnoTest {
                 .apellidoPaternoAlumno("Mora")
                 .apellidoMaternoAlumno("Cruz")
                 .email("jose@mail.com")
-                .matricula("20260001")
+                .matricula("A202600001")
                 .build();
 
         // Act
-        alumno.actualizar("José Ramón", "Mora", "Cruz", "jose.nuevo@mail.com", "20260001");
+        alumno.actualizar("José Ramón", "Mora", "Cruz", "jose.nuevo@mail.com", "A202600001");
 
         // Assert
         assertThat(alumno.getNombreAlumno()).isEqualTo("José Ramón");
@@ -49,13 +44,7 @@ public class AlumnoTest {
     @Test
     void crear_debeLanzarExcepcion_cuandoNombreEsMuyCorto() {
         // Act + Assert
-        assertThatThrownBy(() -> Alumno.crear(
-                "J", // Muy corto (< 2)
-                "Mora",
-                "Cruz",
-                "jose@mail.com",
-                "20260001"
-        ))
+        assertThatThrownBy(() -> Alumno.crear("J", "Mora", "Cruz"))
                 .isInstanceOf(DatoInvalidoException.class)
                 .hasMessage("El nombre es requerido y debe tener entre 2 y 50 caracteres");
     }
